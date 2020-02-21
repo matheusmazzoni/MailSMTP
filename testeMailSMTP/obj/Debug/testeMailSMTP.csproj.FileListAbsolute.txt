@@ -1,0 +1,9 @@
+C:\Users\mathe\Desktop\MailSMTP\testeMailSMTP\obj\Debug\testeMailSMTP.csprojAssemblyReference.cache
+C:\Users\mathe\Desktop\MailSMTP\testeMailSMTP\bin\Debug\testeMailSMTP.exe.config
+C:\Users\mathe\Desktop\MailSMTP\testeMailSMTP\bin\Debug\testeMailSMTP.exe
+C:\Users\mathe\Desktop\MailSMTP\testeMailSMTP\bin\Debug\testeMailSMTP.pdb
+C:\Users\mathe\Desktop\MailSMTP\testeMailSMTP\bin\Debug\MailSMTP.dll
+C:\Users\mathe\Desktop\MailSMTP\testeMailSMTP\bin\Debug\MailSMTP.pdb
+C:\Users\mathe\Desktop\MailSMTP\testeMailSMTP\obj\Debug\testeMailSMTP.csproj.CopyComplete
+C:\Users\mathe\Desktop\MailSMTP\testeMailSMTP\obj\Debug\testeMailSMTP.exe
+C:\Users\mathe\Desktop\MailSMTP\testeMailSMTP\obj\Debug\testeMailSMTP.pdb

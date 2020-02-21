@@ -1,0 +1,10 @@
+D:\Projects\MailSMTP\MailSMTP\bin\Debug\MailSMTP.dll
+D:\Projects\MailSMTP\MailSMTP\bin\Debug\MailSMTP.pdb
+D:\Projects\MailSMTP\MailSMTP\obj\Debug\MailSMTP.csprojAssemblyReference.cache
+D:\Projects\MailSMTP\MailSMTP\obj\Debug\MailSMTP.dll
+D:\Projects\MailSMTP\MailSMTP\obj\Debug\MailSMTP.pdb
+C:\Users\mathe\Desktop\MailSMTP\MailSMTP\bin\Debug\MailSMTP.dll
+C:\Users\mathe\Desktop\MailSMTP\MailSMTP\bin\Debug\MailSMTP.pdb
+C:\Users\mathe\Desktop\MailSMTP\MailSMTP\obj\Debug\MailSMTP.csprojAssemblyReference.cache
+C:\Users\mathe\Desktop\MailSMTP\MailSMTP\obj\Debug\MailSMTP.dll
+C:\Users\mathe\Desktop\MailSMTP\MailSMTP\obj\Debug\MailSMTP.pdb
