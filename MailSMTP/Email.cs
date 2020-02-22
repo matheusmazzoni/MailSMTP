@@ -1,5 +1,4 @@
 ﻿using System;
-
 using System.Collections;
 using System.Net.Mail;
 using System.Net.Mime;
@@ -21,59 +20,46 @@ namespace MailSMTP
          * emailBody: Corpo do Email
          * attachments: Anexos para o Email
          */
-//        public static bool sendEmail(string mailServer, int mailPortServer, string fromName, string fromEmailAddress, string toName,
-//          string toEmailAddress, string emailSubject, string emailBody, ArrayList attachments = null, bool reqAuthentication = false,
-//          string userNameSLL = "", string passwordSLL = "")
-//       {
-//            return new sendEmail();
-//        }
-        public static bool sendEmail(string mailServer, int mailPortServer, string fromName, string fromEmailAddress, string toName,
-            string toEmailAddress, string emailSubject, string emailBody, ArrayList attachments = null, bool reqAuthentication = false, 
-            string userNameSLL = "", string passwordSLL = "")
+
+        public static bool sendEmail(string mailServer, int mailPortServer, string fromName, string fromEmailAddress, ArrayList recipients,
+            string emailSubject, string emailBody, bool reqAuthentication = false, string userNameSLL = "", string passwordSLL = "", ArrayList attachments = null)
         {
             try
             {
-                // Valida o Email do Remetente
-                bool validaEmailRementente = validaEnderecoEmail(fromEmailAddress);
-                if (!validaEmailRementente) return false;
-                
-                // Valida o Email do Destinatario
-                bool validaEmailDestinatario = validaEnderecoEmail(toEmailAddress);
-                if (!validaEmailDestinatario) return false;
-
-                // Estrutura o Email para envio
-                MailAddress remetente = new MailAddress(fromEmailAddress, fromName);
-                MailAddress destinatario = new MailAddress(toEmailAddress, toName);
-                MailMessage mensagemEmail = new MailMessage(remetente, destinatario);
+                // Cria a mensagem do email
+                MailMessage mensagemEmail = new MailMessage();
                 mensagemEmail.Subject = emailSubject;
                 mensagemEmail.Body = emailBody;
+                
+                // Valida o Email do Remetente
+                if (!validaEnderecoEmail(fromEmailAddress)) return false;                
+                mensagemEmail.From = new MailAddress(fromEmailAddress, fromName);
 
-                // Obtem os anexos contidos em um arquivo arraylist e inclui na mensagem
-                if (attachments != null)
+                // Valida o Email do Destinatario
+                foreach (string recipient in recipients)
                 {
-                    foreach (string attachment in attachments)
+                    String[] recipientSplit = recipient.Split(';');
+
+                    bool validaEmailDestinatario = validaEnderecoEmail(recipientSplit[0]);
+                    if (!validaEmailDestinatario) return false;
+                    if (recipientSplit.Length > 1)
                     {
-                        Attachment anexado = new Attachment(attachment, MediaTypeNames.Application.Octet);
-                        mensagemEmail.Attachments.Add(anexado);
+                        mensagemEmail.To.Add(new MailAddress(recipientSplit[0].Trim(), recipientSplit[1]));
+                    }
+                    else
+                    {
+                        mensagemEmail.To.Add(new MailAddress(recipientSplit[0].Trim()));
                     }
                 }
 
-                // Faz a conexão com o Client SMTP
-                SmtpClient client = new SmtpClient(mailServer, mailPortServer);
+                // Anexar documentos ao corpo do Email
+                if (!attachFilesToEmail(mensagemEmail, attachments)) return false;
 
-                if (reqAuthentication)
-                {
-                    client.EnableSsl = true;
-                    client.UseDefaultCredentials = false;
-                    client.Credentials = new NetworkCredential(userNameSLL, passwordSLL);
-                }
-
-                client.Send(mensagemEmail);
-
-                return true;
+                return sendMessage(mailServer, mailPortServer, mensagemEmail, reqAuthentication, userNameSLL, passwordSLL);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return false;
             }
         }
@@ -85,19 +71,59 @@ namespace MailSMTP
                 string texto_Validar = enderecoEmail;
                 Regex expressaoRegex = new Regex(@"\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}");
 
-                // Verifica se o email é valido de acordo com a expressão regular
                 if (expressaoRegex.IsMatch(texto_Validar))
-                {         
+                {
                     return true;
-                } 
+                }
                 else
                 {
                     return false;
-                }                              
+                }
             }
-            catch (Exception)
-            {
+            catch (Exception ex)
+            {           
+                Console.WriteLine(ex);
                 throw;
+            }
+        }
+        private static bool attachFilesToEmail(MailMessage mensagemEmail, ArrayList attachments = null)
+        {
+            try
+            {
+                if (attachments != null)
+                {
+                    foreach (string attachment in attachments)
+                    {
+                        Attachment anexado = new Attachment(attachment, MediaTypeNames.Application.Octet);
+                        mensagemEmail.Attachments.Add(anexado);
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+        }
+        private static bool sendMessage(string mailServer, int mailPortServer, MailMessage mensagemEmail, bool reqAuthentication = false, string userNameSLL = "", string passwordSLL = "")
+        {
+            try
+            {
+                SmtpClient client = new SmtpClient(mailServer, mailPortServer);
+                if (reqAuthentication)
+                {
+                    client.EnableSsl = true;
+                    client.UseDefaultCredentials = false;
+                    client.Credentials = new NetworkCredential(userNameSLL, passwordSLL);
+                }
+                client.Send(mensagemEmail);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
             }
         }
 
