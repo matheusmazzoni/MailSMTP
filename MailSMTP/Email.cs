@@ -14,15 +14,17 @@ namespace MailSMTP
          * mailPort: Porta do Servidor
          * fromName: Nome do Remetente
          * tromEmailAddress: Endereço de Email do Remetente
-         * toName: Nome do Destinatario
-         * toEmailAddress: Endereço de email do Destinatario
+         * recipients: Email e nome dos destinatarios separados por ';'. Ex.: {exemplo@gmail.com;Nome Exemplo}
          * emailSubject: Assunto do Email
          * emailBody: Corpo do Email
-         * attachments: Anexos para o Email
+         * reqAuthentication: (Opcional) Se requer autenticação para conexao com servidor
+         * userNameSSL: (Opcional) Usuaurio de autenticação
+         * passwordSSL: (Opcional) Senha do Usuario autenticado
+         * attachments: (Opcional) Anexos para o Email
          */
 
         public static bool sendEmail(string mailServer, int mailPortServer, string fromName, string fromEmailAddress, ArrayList recipients,
-            string emailSubject, string emailBody, bool reqAuthentication = false, string userNameSLL = "", string passwordSLL = "", ArrayList attachments = null)
+            string emailSubject, string emailBody, bool reqAuthentication = false, string userNameSSL = "", string passwordSSL = "", ArrayList attachments = null)
         {
             try
             {
@@ -55,7 +57,7 @@ namespace MailSMTP
                 // Anexar documentos ao corpo do Email
                 if (!attachFilesToEmail(mensagemEmail, attachments)) return false;
 
-                return sendMessage(mailServer, mailPortServer, mensagemEmail, reqAuthentication, userNameSLL, passwordSLL);
+                return sendMessage(mailServer, mailPortServer, mensagemEmail, reqAuthentication, userNameSSL, passwordSSL);
             }
             catch (Exception ex)
             {
@@ -106,7 +108,7 @@ namespace MailSMTP
                 return false;
             }
         }
-        private static bool sendMessage(string mailServer, int mailPortServer, MailMessage mensagemEmail, bool reqAuthentication = false, string userNameSLL = "", string passwordSLL = "")
+        private static bool sendMessage(string mailServer, int mailPortServer, MailMessage mensagemEmail, bool reqAuthentication = false, string userNameSSL = "", string passwordSSL = "")
         {
             try
             {
@@ -115,7 +117,7 @@ namespace MailSMTP
                 {
                     client.EnableSsl = true;
                     client.UseDefaultCredentials = false;
-                    client.Credentials = new NetworkCredential(userNameSLL, passwordSLL);
+                    client.Credentials = new NetworkCredential(userNameSSL, passwordSSL);
                 }
                 client.Send(mensagemEmail);
                 return true;
