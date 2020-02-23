@@ -7,8 +7,14 @@ using System.Text.RegularExpressions;
 
 namespace MailSMTP
 {
-    public class Email
+    public interface IEmail
     {
+        bool sendEmail(string mailServer, int mailPortServer, string fromName, string fromEmailAddress, ArrayList recipients,
+        string emailSubject, string emailBody, bool reqAuthentication = false, string userNameSSL = "", string passwordSSL = "", ArrayList attachments = null);
+        bool validaEnderecoEmail(string enderecoEmail);
+    }
+    public class Email: IEmail
+    {    
         /*
          * mailServer: Servidor de SMTP
          * mailPort: Porta do Servidor
@@ -23,7 +29,7 @@ namespace MailSMTP
          * attachments: (Opcional) Anexos para o Email
          */
 
-        public static bool sendEmail(string mailServer, int mailPortServer, string fromName, string fromEmailAddress, ArrayList recipients,
+        public bool sendEmail(string mailServer, int mailPortServer, string fromName, string fromEmailAddress, ArrayList recipients,
             string emailSubject, string emailBody, bool reqAuthentication = false, string userNameSSL = "", string passwordSSL = "", ArrayList attachments = null)
         {
             try
@@ -65,7 +71,7 @@ namespace MailSMTP
                 return false;
             }
         }
-        public static bool validaEnderecoEmail(string enderecoEmail)
+        public bool validaEnderecoEmail(string enderecoEmail)
         {
             try
             {
