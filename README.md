@@ -6,18 +6,43 @@ Projeto de uma Dll criada em C# para fazer envios de email urilizando um servido
 
 ## Primeiros passos:
 
-### Adicionando dll ao sistema (vba):
+### Gerando um .tlb da dll:
 
-1. Pegue a MailSMTP.dll e
-2. Copie para sua aplicação a pasta src, na qual contem todos as classes que serão utilizadas;
-3. Abra o seu projeto e importe a pasta copiada.
-4.  A aplicação utiliza o package 'Newtonsoft.Json' para facilitar a deserialização do JSON, respectivamente. 
-
-**Pronto!** Agora, você já pode consumir a NS DDF-e API através do seu sistema. Todas as funcionalidades de comunicação foram implementadas na classe DDFeAPI.cs. Caso tenha dúvidas de como adicionar este package, veja o tutorial a seguir: [Package Newtonsoft.Json](https://docs.microsoft.com/pt-br/nuget/consume-packages/install-use-packages-visual-studio#finding-and-installing-a-package).
+1. Pegue a MailSMTP.dll e copie para a pasta:
+	- C:\Windows\System32 (caso seu Windows for x86);
+	- C:\Windows\SysWOW64 (caso seu Windows for x64);
+2. Abra o Windows PowerShell como Administrador e utilize este comando: cd C:\Windows\Microsoft.NET\Framework\v4.0.30319
+3. Execute no Windows PowerShell o seguinte comando:
+	- Caso x86: .\RegAsm.exe C:\Windows\System32\MailSMTP.dll /codebase /tlb:C:\Windows\System32\MailSMTP.tlb
+	- Caso x64: .\RegAsm.exe C:\Windows\SysWOW64\MailSMTP.dll /codebase /tlb:C:\Windows\SysWOW64\MailSMTP.tlb
+	
+	**ATENÇÃO:** caso não tenha sido criado o arquivo .tlb voce deve executar novamente o passo 3
+	
+4. Após a criação do arquivo .tlb voce deve referencia-lo no seu projeto VBA para que seja possivel utilizar suas funcionalidades
 
 ----------
 
 ## Utilizando o MailSMTP:
+
+
+### Realizando a refencia no Projeto em VB6:
+
+1. Abra seu projeto VBA e vá ate a aba 'Projeto':
+
+![Screenshot_1](https://user-images.githubusercontent.com/54732019/75123207-339fbd80-5684-11ea-9d79-63d6abe2df59.png)
+
+2. Dentro de 'Projeto' vá até Referências:
+
+![Screenshot_2](https://user-images.githubusercontent.com/54732019/75123213-49ad7e00-5684-11ea-85e8-d803712a1045.png)
+
+3. No formulario de referencias busque pelo arquivo .tlb gerado anteriormente:
+
+![Screenshot_3](https://user-images.githubusercontent.com/54732019/75123219-503bf580-5684-11ea-8ab4-31be1bc74588.png)
+	
+4. Selecione o arquivo .tlb e esta tudo pronto para começar a utilizar a dll
+
+![Screenshot_4](https://user-images.githubusercontent.com/54732019/75123244-837e8480-5684-11ea-8584-fc71270216e5.png)
+
 
 ### Realizando um envio de email:
 
